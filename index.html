@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Spin PH - Claim Your Bonus</title>
+    <style>
+        :root {
+            --gcash-blue: #0056fb;
+            --gold: #ffcc00;
+            --dark-blue: #06173d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header-bar {
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            color: var(--gold);
+            text-align: center;
+            padding: 10px 0;
+            font-weight: bold;
+            font-size: 14px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .main-content {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 { font-size: 26px; color: var(--gold); margin-bottom: 5px; text-shadow: 2px 2px #000; }
+        p { font-size: 16px; margin-bottom: 20px; }
+
+        /* 轉盤容器 */
+        .wheel-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        /* 轉盤指針 */
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background: #ff0000;
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 20;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+
+        /* 轉盤本體 */
+        #wheel {
+            width: 100%;
+            height: 100%;
+            transition: transform 4s cubic-bezier(0.1, 0, 0.2, 1);
+        }
+
+        /* 轉盤中心按鈕 */
+        .spin-trigger {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65px;
+            height: 65px;
+            background: white;
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            color: #333;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 15;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* 彈窗設計 */
+        .overlay {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: white;
+            width: 85%;
+            max-width: 350px;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: #333;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .popup h2 { color: #d32f2f; margin: 0; }
+        .popup .prize-text { font-size: 22px; font-weight: bold; margin: 15px 0; color: var(--gcash-blue); }
+        
+        .cta-btn {
+            background: var(--gcash-blue);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .timer-box { color: #d32f2f; font-weight: bold; margin-top: 10px; }
+
+        .winner-ticker {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-bar">🛡️ PAGCOR SECURED | 💸 FAST GCASH PAYOUT</div>
+
+<div class="main-content">
+    <h1>LUCKY WHEEL PH</h1>
+    <p>Spin to win your <b>₱8,888</b> Welcome Bonus!</p>
+
+    <div class="wheel-wrapper">
+        <div class="pointer"></div>
+        <button class="spin-trigger" id="spinBtn" onclick="handleSpin()">SPIN</button>
+        <svg id="wheel" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="#ffcc00" stroke="#fff" stroke-width="1"/>
+            <g id="sections">
+                <path d="M50,50 L50,2 A48,48 0 0,1 84,16 Z" fill="#0056fb" />
+                <path d="M50,50 L84,16 A48,48 0 0,1 98,50 Z" fill="#ff3e3e" />
+                <path d="M50,50 L98,50 A48,48 0 0,1 84,84 Z" fill="#0056fb" />
+                <path d="M50,50 L84,84 A48,48 0 0,1 50,98 Z" fill="#ff3e3e" />
+                <path d="M50,50 L50,98 A48,48 0 0,1 16,84 Z" fill="#0056fb" />
+                <path d="M50,50 L16,84 A48,48 0 0,1 2,50 Z" fill="#ff3e3e" />
+                <path d="M50,50 L2,50 A48,48 0 0,1 16,16 Z" fill="#0056fb" />
+                <path d="M50,50 L16,16 A48,48 0 0,1 50,2 Z" fill="#ff3e3e" />
+            </g>
+            <text x="45" y="15" fill="white" font-size="3" transform="rotate(22 50 50)">JACKPOT</text>
+            <text x="45" y="15" fill="white" font-size="3" transform="rotate(112 50 50)">FREE PHP</text>
+            <text x="45" y="15" fill="white" font-size="3" transform="rotate(202 50 50)">200% BONUS</text>
+            <text x="45" y="15" fill="white" font-size="3" transform="rotate(292 50 50)">TRY AGAIN</text>
+        </svg>
+    </div>
+
+    <div class="winner-ticker" id="ticker">
+        Waiting for next winner...
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <h2>CONGRATULATIONS! 🎉</h2>
+        <p>You have won:</p>
+        <div class="prize-text">₱500 GCASH BONUS + 200% Match</div>
+        <p>Your reward is reserved for:</p>
+        <div class="timer-box" id="timer">05:00</div>
+        <a href="YOUR_AFFILIATE_LINK" class="cta-btn">CLAIM BONUS NOW</a>
+        <p style="font-size: 11px; margin-top:15px;">*Register now to credit to your GCash wallet.</p>
+    </div>
+</div>
+
+<script>
+    let spinCount = 0;
+    const wheel = document.getElementById('wheel');
+    const spinBtn = document.getElementById('spinBtn');
+
+    function handleSpin() {
+        spinCount++;
+        spinBtn.disabled = true;
+
+        if (spinCount === 1) {
+            // 第一次：轉到 "Try Again" 附近
+            const deg = 1800 + 292; 
+            wheel.style.transform = `rotate(${deg}deg)`;
+            setTimeout(() => {
+                alert("SO CLOSE! You received 1 EXTRA FREE SPIN!");
+                spinBtn.disabled = false;
+            }, 4500);
+        } else {
+            // 第二次：必中大獎 (中 Jackpot 或 200% Bonus)
+            const deg = 3600 + 22; 
+            wheel.style.transform = `rotate(${deg}deg)`;
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'flex';
+                startTimer(300);
+            }, 4500);
+        }
+    }
+
+    function startTimer(duration) {
+        let timer = duration, mins, secs;
+        setInterval(() => {
+            mins = parseInt(timer / 60, 10);
+            secs = parseInt(timer % 60, 10);
+            document.getElementById('timer').textContent = 
+                (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+            if (--timer < 0) timer = 0;
+        }, 1000);
+    }
+
+    // 模擬中獎動態
+    const users = ["0917***429", "0918***112", "0927***998", "0945***003"];
+    setInterval(() => {
+        const u = users[Math.floor(Math.random()*users.length)];
+        const amt = (Math.random()*2000 + 500).toFixed(0);
+        document.getElementById('ticker').innerHTML = `🔥 User <b>${u}</b> just withdrawn <b>₱${amt}</b> via GCash!`;
+    }, 4000);
+</script>
+
+</body>
+</html>
