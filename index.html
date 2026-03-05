@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Spin PH - Instant Win</title>
+    <title>Lucky Spin PH - Fix Version</title>
     <style>
         :root {
             --gcash-blue: #0056fb;
             --gold: #ffcc00;
-            --white: #ffffff;
         }
 
         body {
@@ -21,7 +20,7 @@
             align-items: center;
             min-height: 100vh;
             color: white;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         .header-bar {
@@ -33,7 +32,6 @@
             font-weight: bold;
             font-size: 14px;
             border-bottom: 3px solid var(--gold);
-            letter-spacing: 1px;
         }
 
         .main-content {
@@ -41,21 +39,17 @@
             max-width: 450px;
             text-align: center;
             padding: 20px;
-            box-sizing: border-box;
         }
 
-        h1 { font-size: 32px; color: var(--gold); margin-bottom: 5px; text-shadow: 3px 3px #000; }
-        .sub-text { font-size: 18px; margin-bottom: 25px; font-weight: bold; }
+        h1 { font-size: 32px; color: var(--gold); margin: 10px 0; text-shadow: 3px 3px #000; }
 
-        /* 轉盤容器 */
         .wheel-wrapper {
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 0 auto;
+            width: 340px;
+            height: 340px;
+            margin: 20px auto;
         }
 
-        /* 轉盤指針 */
         .pointer {
             position: absolute;
             top: -10px;
@@ -66,41 +60,31 @@
             background: #ff0000;
             clip-path: polygon(50% 100%, 0 0, 100% 0);
             z-index: 30;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
             border: 2px solid white;
         }
 
-        /* 轉盤本體 */
         #wheel {
             width: 100%;
             height: 100%;
             transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
         }
 
-        /* 轉盤中心按鈕 */
         .spin-trigger {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 75px;
-            height: 75px;
-            background: var(--white);
+            width: 70px;
+            height: 70px;
+            background: white;
             border: 5px solid var(--gold);
             border-radius: 50%;
             color: #d32f2f;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            z-index: 20;
+            z-index: 40;
             box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.08); }
-            100% { transform: translate(-50%, -50%) scale(1); }
         }
 
         /* 彈窗 */
@@ -115,42 +99,35 @@
         }
 
         .popup {
-            background: var(--white);
+            background: white;
             width: 85%;
             max-width: 380px;
             border-radius: 25px;
-            padding: 35px;
+            padding: 30px;
             text-align: center;
             color: #333;
             border: 5px solid var(--gold);
         }
 
-        .popup h2 { color: #d32f2f; font-size: 28px; margin: 0; }
-        .prize-box { background: #f0f0f0; padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px dashed var(--gcash-blue); }
-        .prize-text { font-size: 24px; font-weight: 900; color: var(--gcash-blue); }
-        
         .cta-btn {
             background: var(--gcash-blue);
             color: white;
             text-decoration: none;
-            padding: 18px 30px;
+            padding: 15px 30px;
             border-radius: 50px;
             display: block;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,86,251,0.4);
+            margin-top: 20px;
         }
 
-        .timer-box { color: #ff0000; font-weight: bold; font-size: 20px; margin-top: 10px; }
-
         .winner-ticker {
-            margin-top: 40px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             padding: 10px 20px;
             border-radius: 50px;
             font-size: 13px;
             color: var(--gold);
-            border: 1px solid var(--gold);
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -160,78 +137,67 @@
 
 <div class="main-content">
     <h1>BIG WIN SPINS</h1>
-    <p class="sub-text">Tap SPIN to get your ₱8,888 Jackpot!</p>
+    <p>Tap SPIN to get your ₱8,888 Jackpot!</p>
 
     <div class="wheel-wrapper">
         <div class="pointer"></div>
         <button class="spin-trigger" id="spinBtn" onclick="handleSpin()">SPIN</button>
+        
         <svg id="wheel" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="#333" stroke="#ffcc00" stroke-width="2"/>
+            <defs>
+                <path id="textPath" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+            </defs>
             
-            <g id="sections">
+            <g id="sectors">
                 <path d="M50,50 L50,2 A48,48 0 0,1 84,16 Z" fill="#d32f2f" />
-                <text x="58" y="12" fill="white" font-size="3.5" font-weight="bold" transform="rotate(22, 50, 50)">JACKPOT</text>
-                
                 <path d="M50,50 L84,16 A48,48 0 0,1 98,50 Z" fill="#0056fb" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(67, 50, 50)">₱100 FREE</text>
-                
                 <path d="M50,50 L98,50 A48,48 0 0,1 84,84 Z" fill="#d32f2f" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(112, 50, 50)">MAX WIN</text>
-                
                 <path d="M50,50 L84,84 A48,48 0 0,1 50,98 Z" fill="#0056fb" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(157, 50, 50)">TRY AGAIN</text>
-                
                 <path d="M50,50 L50,98 A48,48 0 0,1 16,84 Z" fill="#d32f2f" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(202, 50, 50)">₱888 BONUS</text>
-                
                 <path d="M50,50 L16,84 A48,48 0 0,1 2,50 Z" fill="#0056fb" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(247, 50, 50)">200% MATCH</text>
-                
                 <path d="M50,50 L2,50 A48,48 0 0,1 16,16 Z" fill="#d32f2f" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(292, 50, 50)">SPIN AGAIN</text>
-                
                 <path d="M50,50 L16,16 A48,48 0 0,1 50,2 Z" fill="#0056fb" />
-                <text x="58" y="12" fill="white" font-size="3.5" transform="rotate(337, 50, 50)">NO LUCK</text>
             </g>
+
+            <text fill="white" font-size="4.5" font-weight="bold">
+                <textPath href="#textPath" startOffset="6.25%">JACKPOT</textPath>
+                <textPath href="#textPath" startOffset="18.75%">₱100 FREE</textPath>
+                <textPath href="#textPath" startOffset="31.25%">MAX WIN</textPath>
+                <textPath href="#textPath" startOffset="43.75%">TRY AGAIN</textPath>
+                <textPath href="#textPath" startOffset="56.25%">₱888 BONUS</textPath>
+                <textPath href="#textPath" startOffset="68.75%">200% MATCH</textPath>
+                <textPath href="#textPath" startOffset="81.25%">SPIN AGAIN</textPath>
+                <textPath href="#textPath" startOffset="93.75%">NO LUCK</textPath>
+            </text>
         </svg>
     </div>
 
-    <div class="winner-ticker" id="ticker">
-        🔥 Someone just won ₱5,000!
-    </div>
+    <div class="winner-ticker" id="ticker">🔥 Loading winners...</div>
 </div>
 
 <div class="overlay" id="overlay">
     <div class="popup">
         <h2>YOU WON! 🎉</h2>
-        <div class="prize-box">
-            <p style="margin:0; font-size:14px;">YOUR PRIZE:</p>
-            <div class="prize-text">₱8,888 JACKPOT BONUS</div>
-        </div>
-        <p>Claim expires in:</p>
-        <div class="timer-box" id="timer">05:00</div>
+        <p style="font-size: 24px; font-weight: 900; color: #0056fb; margin: 20px 0;">₱8,888 JACKPOT BONUS</p>
+        <p>Claim expires in: <span id="timer" style="color:red; font-weight:bold;">05:00</span></p>
         <a href="https://www.taya1225.xyz/home?affiliateCode=xoplu" class="cta-btn">CLAIM VIA GCASH</a>
-        <p style="font-size: 11px; margin-top:15px; color:#666;">*Register your mobile number to receive the bonus.</p>
     </div>
 </div>
 
 <script>
-    const wheel = document.getElementById('wheel');
-    const spinBtn = document.getElementById('spinBtn');
-
     function handleSpin() {
-        spinBtn.disabled = true;
-        spinBtn.style.animation = "none";
+        const wheel = document.getElementById('wheel');
+        const btn = document.getElementById('spinBtn');
+        btn.disabled = true;
         
-        // 邏輯改為：第一次轉動就必中 "JACKPOT"
-        // 旋轉圈數(360*10) + 角度(使指針停在紅色第一格)
-        const totalDeg = 3600 + 22; 
+        // 必中第一格 JACKPOT (角度調整)
+        const totalDeg = 3600 + 0; 
         wheel.style.transform = `rotate(${totalDeg}deg)`;
 
         setTimeout(() => {
             document.getElementById('overlay').style.display = 'flex';
             startTimer(300);
-        }, 5500); // 旋轉時間稍微拉長增加緊張感
+        }, 5500);
     }
 
     function startTimer(duration) {
@@ -244,15 +210,6 @@
             if (--timer < 0) timer = 0;
         }, 1000);
     }
-
-    // 模擬動態中獎信息
-    const users = ["0917***429", "0918***112", "0927***998", "0905***667", "0945***003"];
-    setInterval(() => {
-        const u = users[Math.floor(Math.random()*users.length)];
-        const amt = (Math.random()*5000 + 100).toFixed(0);
-        document.getElementById('ticker').innerHTML = `⚡ User <b>${u}</b> claimed <b>₱${amt}</b> via GCash!`;
-    }, 3500);
 </script>
-
 </body>
 </html>
